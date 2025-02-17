@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import { Button } from "./ui/button";
+import Link from "next/link";
 
 // Menu items.
 const items = [
@@ -32,27 +33,27 @@ const items = [
   },
   {
     title: "CPU",
-    url: "#",
+    url: "/dashboard/cpu",
     icon: Cpu,
   },
   {
     title: "RAM",
-    url: "#",
+    url: "/dashboard/ram",
     icon: MemoryStick,
   },
   {
     title: "Red",
-    url: "#",
+    url: "/dashboard/red",
     icon: Globe,
   },
   {
     title: "Procesos",
-    url: "#",
+    url: "/dashboard/procesos",
     icon: PackageSearch,
   },
   {
     title: "Otros",
-    url: "#",
+    url: "/dashboard/otros",
     icon: HardDrive,
   },
 ];
@@ -79,10 +80,10 @@ export function AppSidebar() {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                    <Link href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

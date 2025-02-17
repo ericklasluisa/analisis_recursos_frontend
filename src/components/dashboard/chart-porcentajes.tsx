@@ -57,11 +57,7 @@ function ChartPorcentajes({ nombre, porcentaje }: ChartPorcentajesProps) {
           className="first:fill-slate-400 last:fill-background"
           polarRadius={[86, 74]}
         />
-        <RadialBar
-          dataKey="porcentaje"
-          cornerRadius={10}
-          fill={color}
-        />
+        <RadialBar dataKey="porcentaje" cornerRadius={10} fill={color} />
         <PolarRadiusAxis tick={false} tickLine={false} axisLine={false}>
           <Label
             content={({ viewBox }) => {

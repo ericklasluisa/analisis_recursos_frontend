@@ -1,7 +1,14 @@
+"use client";
+
 import ChartPorcentajes from "@/components/dashboard/chart-porcentajes";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import useSocket from "@/hooks/use-socketio";
+import { MetricasCPU, MetricasRAM } from "../../../types/index";
 
 export default function HomePage() {
+  const cpuUsage = useSocket<MetricasCPU>("update_cpu");
+  const ramUsage = useSocket<MetricasRAM>("update_memory");
+
   return (
     <div>
       <h2 className="text-2xl font-bold mb-4">
@@ -13,7 +20,10 @@ export default function HomePage() {
             <CardTitle>Uso de CPU</CardTitle>
           </CardHeader>
           <CardContent className="flex items-center justify-center">
-            <ChartPorcentajes nombre="CPU" porcentaje={30} />
+            <ChartPorcentajes
+              nombre="CPU"
+              porcentaje={cpuUsage?.cpu_percent || 0}
+            />
           </CardContent>
         </Card>
 
@@ -22,7 +32,10 @@ export default function HomePage() {
             <CardTitle>Uso de Memoria RAM</CardTitle>
           </CardHeader>
           <CardContent className="flex items-center justify-center">
-            <ChartPorcentajes nombre="RAM" porcentaje={85} />
+            <ChartPorcentajes
+              nombre="RAM"
+              porcentaje={ramUsage?.memory_percent || 0}
+            />
           </CardContent>
         </Card>
 
