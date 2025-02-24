@@ -22,3 +22,18 @@ export interface MetricasRAM {
   memory_cached: string;
   memory_shared: string;
 }
+
+export interface NetworkConnection {
+  is_up:                boolean;
+  ip_address:           string;
+  mac_address:          string;
+  speed:                number;
+  network_sent:         number;
+  network_recv:         number;
+  network_sent_packets: number;
+  network_recv_packets: number;
+  network_sent_errs:    number;
+  network_recv_errs:    number;
+  network_dropin:       number;
+  network_dropout:      number;
+}
