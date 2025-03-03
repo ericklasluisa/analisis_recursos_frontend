@@ -208,6 +208,18 @@ export default function RedPage() {
     </AccordionItem>
   );
 
+  // Si los datos de red no están disponibles, mostrar loader
+  if (!networkData) {
+    return (
+      <div className="flex items-center justify-center h-[200px]">
+        <div className="text-center">
+          <h3 className="text-lg font-medium">Cargando datos de red...</h3>
+          <p className="text-muted-foreground">Por favor, espere</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div>
       <h2 className="text-2xl font-bold mb-4">Monitoreo de Red</h2>

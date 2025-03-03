@@ -37,3 +37,23 @@ export interface NetworkConnection {
   network_dropin:       number;
   network_dropout:      number;
 }
+
+export interface Procesos {
+  foreground: Ground[];
+  background: Ground[];
+}
+
+export interface Ground {
+  pid:         number;
+  name:        string;
+  status:      Status;
+  cpu_percent: number;
+  memory_rss:  number;
+  memory_vms:  number;
+  create_time: number;
+}
+
+export enum Status {
+  Running = "running",
+  Stopped = "stopped",
+}
