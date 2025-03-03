@@ -21,6 +21,8 @@ import { SearchIcon, SortAscIcon, SortDescIcon } from "lucide-react";
 import TablaProcesos from "@/components/dashboard/tabla-procesos";
 import { GraficoProcesosTop } from "@/components/dashboard/grafico-procesos-top";
 import { ResumenProcesos } from "@/components/dashboard/resumen-procesos";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface Proceso {
   pid: number;
@@ -82,11 +84,103 @@ export default function ProcesosPage() {
 
   if (!procesosData) {
     return (
-      <div className="flex items-center justify-center h-[200px]">
-        <div className="text-center">
-          <h3 className="text-lg font-medium">Cargando datos de procesos...</h3>
-          <p className="text-muted-foreground">Por favor, espere</p>
+      <div>
+        <h2 className="text-2xl font-bold mb-4">Monitoreo de Procesos</h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          {/* Skeleton para ResumenProcesos */}
+          {Array(3)
+            .fill(0)
+            .map((_, i) => (
+              <Card key={i}>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <Skeleton className="h-6 w-32" />
+                  <Skeleton className="h-4 w-4 rounded-full" />
+                </CardHeader>
+                <CardContent>
+                  <Skeleton className="h-8 w-16 mb-2" />
+                  <Skeleton className="h-4 w-24" />
+                </CardContent>
+              </Card>
+            ))}
         </div>
+
+        <Accordion
+          type="multiple"
+          defaultValue={["charts", "table"]}
+          className="w-full space-y-4"
+        >
+          <AccordionItem value="charts">
+            <AccordionTrigger className="font-bold text-lg">
+              <div className="flex items-center">Gráficos de Procesos</div>
+            </AccordionTrigger>
+            <AccordionContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Top Procesos por CPU</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="h-[300px]">
+                      <Skeleton className="h-full w-full" />
+                    </div>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Top Procesos por Memoria</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="h-[300px]">
+                      <Skeleton className="h-full w-full" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="table">
+            <AccordionTrigger className="font-bold text-lg">
+              Lista de Procesos
+            </AccordionTrigger>
+            <AccordionContent>
+              <Tabs defaultValue="foreground" className="w-full">
+                <div className="flex justify-between items-center mb-4">
+                  <TabsList>
+                    <TabsTrigger value="foreground">
+                      Procesos en Primer Plano
+                    </TabsTrigger>
+                    <TabsTrigger value="background">
+                      Procesos en Segundo Plano
+                    </TabsTrigger>
+                  </TabsList>
+
+                  <div className="flex items-center gap-2">
+                    <div className="relative">
+                      <SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                      <Skeleton className="h-9 w-[200px] rounded-md" />
+                    </div>
+                    <Skeleton className="h-9 w-[120px] rounded-md" />
+                  </div>
+                </div>
+
+                <TabsContent value="foreground">
+                  <div className="rounded-md border">
+                    <div className="p-4">
+                      <Skeleton className="h-8 w-full mb-4" />
+                      {Array(5)
+                        .fill(0)
+                        .map((_, i) => (
+                          <Skeleton key={i} className="h-16 w-full mb-2" />
+                        ))}
+                    </div>
+                  </div>
+                </TabsContent>
+              </Tabs>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
       </div>
     );
   }

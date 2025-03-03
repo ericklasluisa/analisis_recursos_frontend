@@ -7,6 +7,7 @@ import { MetricasCPU, MetricasRAM, Procesos } from "@/types";
 import { NetworkConnection } from "@/types";
 import { useEffect, useState } from "react";
 import { Activity, Users } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function HomePage() {
   const cpuUsage = useSocket<MetricasCPU>("update_cpu");
@@ -61,13 +62,81 @@ export default function HomePage() {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
   }
 
-  // Si alguno de los datos principales no está disponible, mostrar loader
+  // Si alguno de los datos principales no está disponible, mostrar skeletons
   if (!cpuUsage || !ramUsage || !networkData || !procesosData) {
     return (
-      <div className="flex items-center justify-center h-[200px]">
-        <div className="text-center">
-          <h3 className="text-lg font-medium">Cargando datos del sistema...</h3>
-          <p className="text-muted-foreground">Por favor, espere</p>
+      <div>
+        <h2 className="text-2xl font-bold mb-4">
+          Monitoreo de Recursos principales
+        </h2>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-10">
+          {/* Skeleton para CPU */}
+          <Card>
+            <CardHeader className="items-center">
+              <CardTitle className="flex items-center gap-2">
+                Uso de CPU
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="flex items-center justify-center">
+              <div className="h-[200px] w-[200px] relative flex items-center justify-center">
+                <Skeleton className="h-[200px] w-[200px] rounded-full" />
+                <Skeleton className="absolute h-[160px] w-[160px] rounded-full bg-background" />
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Skeleton para RAM */}
+          <Card>
+            <CardHeader className="items-center">
+              <CardTitle className="flex items-center gap-2">
+                Uso de Memoria RAM
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="flex items-center justify-center">
+              <div className="h-[200px] w-[200px] relative flex items-center justify-center">
+                <Skeleton className="h-[200px] w-[200px] rounded-full" />
+                <Skeleton className="absolute h-[160px] w-[160px] rounded-full bg-background" />
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Skeleton para Red */}
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle className="flex items-center">
+                <Activity className="mr-2 h-5 w-5" /> Uso de Red
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <Skeleton className="h-6 w-32 mb-2" />
+                  <Skeleton className="h-4 w-24" />
+                </div>
+                <div className="text-right">
+                  <Skeleton className="h-4 w-20 mb-2 ml-auto" />
+                  <Skeleton className="h-4 w-24 ml-auto" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Skeleton para Procesos */}
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle className="flex items-center">
+                <Users className="mr-2 h-5 w-5" /> Procesos activos
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center justify-center mb-4">
+                <div className="text-center">
+                  <Skeleton className="h-10 w-16 mb-2 mx-auto" />
+                  <Skeleton className="h-4 w-24 mx-auto" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     );

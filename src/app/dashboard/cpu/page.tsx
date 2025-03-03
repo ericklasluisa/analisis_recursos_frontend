@@ -13,6 +13,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import useSocket from "@/hooks/use-socketio";
 import { MetricasCPU } from "@/types";
 import { useEffect, useState } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function CpuPage() {
   const cpuUsage = useSocket<MetricasCPU>("update_cpu");
@@ -27,14 +28,74 @@ export default function CpuPage() {
     }
   }, [cpuUsage?.cpu_percent]);
 
-  // Si los datos de CPU no están disponibles, mostrar loader
+  // Si los datos de CPU no están disponibles, mostrar skeletons
   if (!cpuUsage) {
     return (
-      <div className="flex items-center justify-center h-[200px]">
-        <div className="text-center">
-          <h3 className="text-lg font-medium">Cargando datos de CPU...</h3>
-          <p className="text-muted-foreground">Por favor, espere</p>
-        </div>
+      <div>
+        <h2 className="text-2xl font-bold mb-4">Monitoreo de CPU</h2>
+        <Accordion
+          type="multiple"
+          defaultValue={["info", "uso"]}
+          className="w-full"
+        >
+          <AccordionItem value="uso">
+            <AccordionTrigger className="font-bold text-lg">
+              Uso de la CPU
+            </AccordionTrigger>
+            <AccordionContent>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-4 md:gap-10">
+                <Card>
+                  <CardHeader className="items-center">
+                    <CardTitle>Uso de CPU</CardTitle>
+                  </CardHeader>
+                  <CardContent className="flex items-center justify-center">
+                    <div className="h-[200px] w-[200px] relative flex items-center justify-center">
+                      <Skeleton className="h-[200px] w-[200px] rounded-full" />
+                      <Skeleton className="absolute h-[160px] w-[160px] rounded-full bg-background" />
+                      <div className="absolute flex flex-col items-center">
+                        <Skeleton className="h-7 w-16 mb-1" />
+                        <Skeleton className="h-4 w-10" />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="col-span-1 md:col-span-3">
+                  <CardHeader className="items-center">
+                    <CardTitle>Uso de CPU</CardTitle>
+                  </CardHeader>
+                  <CardContent className="flex items-center justify-center h-[200px]">
+                    <div className="w-full h-full">
+                      <Skeleton className="h-full w-full" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="info">
+            <AccordionTrigger className="font-bold text-lg">
+              Información del CPU
+            </AccordionTrigger>
+            <AccordionContent>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-10">
+                {Array(6)
+                  .fill(0)
+                  .map((_, i) => (
+                    <Card key={i}>
+                      <CardHeader className="items-center">
+                        <Skeleton className="h-6 w-32" />
+                      </CardHeader>
+                      <CardContent className="flex items-center justify-center">
+                        <Skeleton className="h-8 w-20" />
+                      </CardContent>
+                    </Card>
+                  ))}
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
       </div>
     );
   }

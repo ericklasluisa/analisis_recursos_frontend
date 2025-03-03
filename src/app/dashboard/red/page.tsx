@@ -15,6 +15,8 @@ import { ChartErroresRed } from "@/components/dashboard/chart-errores-red";
 import { ChartVelocidadRed } from "@/components/dashboard/chart-velocidad-red";
 import { ChartMetricasPaquetes } from "@/components/dashboard/chart-metricas-paquetes";
 import { useState, useEffect } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Network } from "lucide-react";
 
 function formatSpeed(speed: number): string {
   if (speed >= 1000) {
@@ -208,13 +210,106 @@ export default function RedPage() {
     </AccordionItem>
   );
 
-  // Si los datos de red no están disponibles, mostrar loader
+  // Si los datos de red no están disponibles, mostrar skeletons
   if (!networkData) {
     return (
-      <div className="flex items-center justify-center h-[200px]">
-        <div className="text-center">
-          <h3 className="text-lg font-medium">Cargando datos de red...</h3>
-          <p className="text-muted-foreground">Por favor, espere</p>
+      <div>
+        <h2 className="text-2xl font-bold mb-4">Monitoreo de Red</h2>
+        <div className="space-y-6">
+          <Accordion
+            type="multiple"
+            defaultValue={["metricas"]}
+            className="w-full space-y-4"
+          >
+            <AccordionItem value="metricas">
+              <AccordionTrigger className="font-bold text-lg">
+                <div className="flex items-center">
+                  <Network className="mr-2 h-5 w-5" />
+                  Métricas y Tendencias de Paquetes
+                </div>
+              </AccordionTrigger>
+              <AccordionContent>
+                <Card className="col-span-full">
+                  <CardHeader className="flex flex-row items-center justify-between">
+                    <CardTitle>Paquetes por Segundo en Tiempo Real</CardTitle>
+                    <div className="flex gap-4">
+                      <Skeleton className="h-9 w-[180px] rounded-md" />
+                      <Skeleton className="h-9 w-[130px] rounded-md" />
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="h-[400px] w-full">
+                      <Skeleton className="h-full w-full" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="velocidad">
+              <AccordionTrigger className="font-bold text-lg">
+                Velocidades de Red
+              </AccordionTrigger>
+              <AccordionContent>
+                <Card className="col-span-full">
+                  <CardHeader>
+                    <CardTitle>Velocidad por Interfaz de Red</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="h-[400px] w-full">
+                      <Skeleton className="h-full w-full" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="errores">
+              <AccordionTrigger className="font-bold text-lg">
+                Resumen de Errores y Paquetes Descartados
+              </AccordionTrigger>
+              <AccordionContent>
+                <Card className="col-span-full">
+                  <CardHeader>
+                    <CardTitle>Estado de Errores por Interfaz</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="h-[450px] w-full">
+                      <Skeleton className="h-full w-full" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </AccordionContent>
+            </AccordionItem>
+
+            {/* Skeleton para interfaces */}
+            {[1, 2].map((i) => (
+              <AccordionItem key={i} value={`interface-${i}`}>
+                <AccordionTrigger className="font-bold text-lg">
+                  <div className="flex justify-between items-center w-full pr-4">
+                    <span>
+                      <Skeleton className="h-6 w-32 inline-block" />
+                    </span>
+                    <span className="text-sm px-2 py-1 rounded-full bg-gray-100">
+                      <Skeleton className="h-4 w-16 inline-block" />
+                    </span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="space-y-4">
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Uso de Red en Tiempo Real</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <Skeleton className="h-[200px] w-full" />
+                      </CardContent>
+                    </Card>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
         </div>
       </div>
     );
