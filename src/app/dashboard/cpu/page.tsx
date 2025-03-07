@@ -14,6 +14,7 @@ import useSocket from "@/hooks/use-socketio";
 import { MetricasCPU } from "@/types";
 import { useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { toast } from "sonner";
 
 export default function CpuPage() {
   const cpuUsage = useSocket<MetricasCPU>("update_cpu");
@@ -27,6 +28,12 @@ export default function CpuPage() {
       });
     }
   }, [cpuUsage?.cpu_percent]);
+
+  useEffect(() => {
+    if (cpuUsage != undefined && cpuUsage.cpu_percent > 90) {
+      toast.error("Uso de CPU muy alto");
+    }
+  }, [cpuUsage]);
 
   // Si los datos de CPU no están disponibles, mostrar skeletons
   if (!cpuUsage) {

@@ -8,6 +8,7 @@ import { NetworkConnection } from "@/types";
 import { useEffect, useState } from "react";
 import { Activity, Users } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { toast } from "sonner";
 
 export default function HomePage() {
   const cpuUsage = useSocket<MetricasCPU>("update_cpu");
@@ -47,6 +48,16 @@ export default function HomePage() {
       });
     }
   }, [networkData]);
+
+  useEffect(() => {
+    if (cpuUsage != undefined && cpuUsage.cpu_percent > 90) {
+      toast.error("Uso de CPU muy alto");
+    }
+
+    if (ramUsage != undefined && ramUsage.memory_percent > 90) {
+      toast.error("Uso de RAM muy alto");
+    }
+  }, [cpuUsage, ramUsage]);
 
   // Contar procesos totales
   const totalProcesos = procesosData

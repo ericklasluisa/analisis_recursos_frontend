@@ -14,6 +14,7 @@ import useSocket from "@/hooks/use-socketio";
 import { MetricasRAM } from "@/types";
 import { useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { toast } from "sonner";
 
 export default function RamPage() {
   const ramUsage = useSocket<MetricasRAM>("update_memory");
@@ -27,6 +28,12 @@ export default function RamPage() {
       });
     }
   }, [ramUsage?.memory_percent]);
+
+  useEffect(() => {
+    if (ramUsage != undefined && ramUsage.memory_percent > 90) {
+      toast.error("Uso de RAM muy alto");
+    }
+  }, [ramUsage]);
 
   // Si los datos de RAM no están disponibles, mostrar skeletons
   if (!ramUsage) {
