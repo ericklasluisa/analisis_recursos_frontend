@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Cpu, Activity, ListChecks, Layers, Clock } from "lucide-react";
+import { Cpu, Activity, Layers } from "lucide-react";
 
 interface Proceso {
   pid: number;
@@ -35,6 +35,7 @@ export function ResumenProcesos({
   );
 
   // Contar estados de procesos
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const statusCounts = allProcesses.reduce((counts, process) => {
     const status = process.status;
     counts[status] = (counts[status] || 0) + 1;

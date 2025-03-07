@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import {
@@ -49,6 +50,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 
 export function ChartErroresRed({ networkData }: ChartErroresRedProps) {
   const data: ErrorData[] = Object.entries(networkData)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     .filter(([_, data]) => data.is_up)
     .map(([name, data]) => ({
       name,

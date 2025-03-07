@@ -524,6 +524,7 @@ export default function OtrosPage() {
                           labelFormatter={(label) =>
                             new Date(label).toLocaleTimeString()
                           }
+                          // eslint-disable-next-line @typescript-eslint/no-explicit-any
                           formatter={(value: any) => [
                             value.toLocaleString(),
                             "",
